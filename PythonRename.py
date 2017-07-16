@@ -1,8 +1,4 @@
-# Copyright (c) 2017, Ed Tucker
-#
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without modification,
+# Author: Ed Tucker, 2017
 #
 # PythonRename is a unit that renames all files in a directory (non-recursive) 
 # according to the file creation date-time, with a possible appended tag.

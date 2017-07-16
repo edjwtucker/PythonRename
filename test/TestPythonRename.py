@@ -1,8 +1,4 @@
-# Copyright (c) 2017, Ed Tucker
-#
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without modification,
+# Author: Ed Tucker, 2017
 #
 # Test suite for the PythonRename unit.
 
