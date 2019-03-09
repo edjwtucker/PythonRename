@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Author: Ed Tucker, 2017
 #
 # Test suite for the PythonRename unit.
@@ -51,12 +53,12 @@ def remove_directory(directory):
         shutil.rmtree(directory)
 
 
-    
-# Test Class for PythonRename module
-class TestPythonRename(unittest.TestCase):
 
-    # test fixture
+class TestPythonRename(unittest.TestCase):
+    """ Test Class for PythonRename module."""
+
     def setUp(self):
+        """test fixture"""
         print("SETUP")
         
         # Clean and then make directory for testing
@@ -86,15 +88,15 @@ class TestPythonRename(unittest.TestCase):
         self.tag = test_tag
 
     
-    # count_files_and_folders() test case
     def test_count_files_and_folders(self):
+        """count_files_and_folders() test case"""
         print("test count_files_and_folders()")
         self.assertEqual(rename.count_files_and_folders(self.test_directory), 
             self.number_of_files+self.number_of_folders)
 
 
-    # create_filename() test case
     def test_create_filename(self):
+        """create_filename() test case"""
         print("test create_filename()")
         # Test without number input
         expected_filename = '20170716_160100_TEST.jpg'
@@ -104,9 +106,9 @@ class TestPythonRename(unittest.TestCase):
         expected_filename = '20170716_160100_10_TEST.jpg'
         self.assertEqual(rename.create_filename('20170716_160100', 'TEST', 'jpg', 10), expected_filename)
 
-
-    # create_unique_filename() test case    
+  
     def test_create_unique_filename(self):
+        """create_unique_filename() test case"""
         print("test create_unique_filename()")
         # Test creation of file that does not already exist
         expected_filename = '20170716_160100_TEST.jpg'
@@ -121,8 +123,9 @@ class TestPythonRename(unittest.TestCase):
         remove_directory(new_directory)
 
 
-    # rename_files_by_datetime() test case
     def test_rename_files_by_datetime(self):
+        """rename_files_by_datetime() test case"""
+
         # Rename files created during setup and confirm output
         print("test rename_files_by_datetime()")
         
@@ -153,8 +156,8 @@ class TestPythonRename(unittest.TestCase):
         print("test rename_files_by_datetime() complete")
         
 
-    # test fixture
     def tearDown(self):
+        """test fixture"""
         # Remove generated folder and files
         print("TEARDOWN")
         remove_directory(self.test_directory)
