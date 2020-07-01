@@ -17,7 +17,7 @@ path = os.getcwd()
 
 test_directory = "TestFiles"
 
-test_file_details =  [{'name': 'File-1.png', 'content': '1234'}, 
+test_file_details =  [{'name': 'File-1.png', 'content': '1234'},
                     {'name': 'File_!$%^&.doc', 'content': '98765'},
                     {'name': '___ext.JPEG', 'content': 'asdfg'},
                     {'name': 'DSC_1000.PNG', 'content': 'qwerty brain'},
@@ -36,7 +36,7 @@ def get_number_of_files_in_directory(directory):
     number_of_files = sum(os.path.isfile(os.path.join(directory, f)) for f in os.listdir(directory))
     print('Number of files = ', number_of_files)
     return number_of_files
-    
+
 
 def create_file(file_path, content):
     with open(file_path, 'w') as f:
@@ -60,7 +60,7 @@ class TestPythonRename(unittest.TestCase):
     def setUp(self):
         """test fixture"""
         print("SETUP")
-        
+
         # Clean and then make directory for testing
         self.test_directory = os.path.join(path, test_directory)
         remove_directory(self.test_directory)
@@ -75,7 +75,7 @@ class TestPythonRename(unittest.TestCase):
             create_file(self.test_directory + "/" + file['name'], file['content'])
             self.file_contents.append(file['content'])
             self.number_of_files += 1
-        
+
         # Create subfolders to test non-recursive renaming
         self.folders = test_folder_details
         for folder in self.folders:
@@ -84,14 +84,14 @@ class TestPythonRename(unittest.TestCase):
             self.number_of_folders += 1
             for file in folder['files']:
                 create_file(folder['full_path'] + "/" + file, test_default_content)
-        
+
         self.tag = test_tag
 
-    
+
     def test_count_files_and_folders(self):
         """count_files_and_folders() test case"""
         print("test count_files_and_folders()")
-        self.assertEqual(rename.count_files_and_folders(self.test_directory), 
+        self.assertEqual(rename.count_files_and_folders(self.test_directory),
             self.number_of_files+self.number_of_folders)
 
 
@@ -100,26 +100,30 @@ class TestPythonRename(unittest.TestCase):
         print("test create_filename()")
         # Test without number input
         expected_filename = '20170716_160100_TEST.jpg'
-        self.assertEqual(rename.create_filename('20170716_160100', 'TEST', 'jpg', None), expected_filename)
+        self.assertEqual(rename.create_filename('20170716_160100', 'jpg', 'TEST', None), expected_filename)
 
         # Test with number input
         expected_filename = '20170716_160100_10_TEST.jpg'
-        self.assertEqual(rename.create_filename('20170716_160100', 'TEST', 'jpg', 10), expected_filename)
+        self.assertEqual(rename.create_filename('20170716_160100', 'jpg', 'TEST', 10), expected_filename)
 
-  
+        # Test with None tag
+        expected_filename = '20170716_160100_10.jpg'
+        self.assertEqual(rename.create_filename('20170716_160100', 'jpg', None, 10), expected_filename)
+
+
     def test_create_unique_filename(self):
         """create_unique_filename() test case"""
         print("test create_unique_filename()")
         # Test creation of file that does not already exist
         expected_filename = '20170716_160100_TEST.jpg'
-        self.assertEqual(rename.create_unique_filename(self.test_directory, '20170716_160100', 'TEST', 'jpg'), expected_filename)
+        self.assertEqual(rename.create_unique_filename(self.test_directory, '20170716_160100', 'jpg', 'TEST'), expected_filename)
 
         # Test creation of file that does already exist
         expected_filename = '20170716_160100_1_TEST.jpg'
         new_directory = 'NewTestFolder'
         create_directory(new_directory)
-        create_file(new_directory + "/" + '20170716_160100_TEST.jpg', 'content')            
-        self.assertEqual(rename.create_unique_filename(new_directory, '20170716_160100', 'TEST','jpg'), expected_filename)
+        create_file(new_directory + "/" + '20170716_160100_TEST.jpg', 'content')
+        self.assertEqual(rename.create_unique_filename(new_directory, '20170716_160100', 'jpg', 'TEST'), expected_filename)
         remove_directory(new_directory)
 
 
@@ -128,13 +132,13 @@ class TestPythonRename(unittest.TestCase):
 
         # Rename files created during setup and confirm output
         print("test rename_files_by_datetime()")
-        
+
         # Rename files using PythonRename module
         rename.rename_files_by_datetime(self.test_directory, self.tag)
 
         # Confirm the correct number of files exists, i.e. we haven't lost any
         self.assertEqual(get_number_of_files_in_directory(self.test_directory), self.number_of_files)
-        
+
         # Confirm sub directories have not been touched
         for folder in self.folders:
             self.assertTrue(os.path.exists(folder['full_path']))
@@ -154,7 +158,7 @@ class TestPythonRename(unittest.TestCase):
                     self.assertTrue(self.tag in file)
 
         print("test rename_files_by_datetime() complete")
-        
+
 
     def tearDown(self):
         """test fixture"""
@@ -162,6 +166,6 @@ class TestPythonRename(unittest.TestCase):
         print("TEARDOWN")
         remove_directory(self.test_directory)
 
-            
+
 if __name__ == '__main__':
     unittest.main()
